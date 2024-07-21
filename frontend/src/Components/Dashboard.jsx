@@ -24,7 +24,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex flex-row h-[100vh] bg-[#E7F0DC]">
+    <div className="flex flex-row h-[100vh] bg-[#E7F0DC] overflow-y-hidden">
       <div className="w-[29%]">
         <Left userid={id} username={name} onChecked={handleFrendChat} />
       </div>

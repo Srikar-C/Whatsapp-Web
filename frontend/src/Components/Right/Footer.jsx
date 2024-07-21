@@ -1,7 +1,7 @@
 import { GrEmoji } from "react-icons/gr";
 import { RiAttachment2 } from "react-icons/ri";
 import { IoSend } from "react-icons/io5";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Footer(props) {
   const [msg, setMsg] = useState("");
@@ -38,6 +38,7 @@ export default function Footer(props) {
       })
       .then((data) => {
         setMsg("");
+        props.onChecked();
         console.log("Message Successfully Inserted");
         console.log("Footer.jsx->Data: " + data);
       })
@@ -84,10 +85,7 @@ export default function Footer(props) {
         <IoSend
           className="text-4xl font-light cursor-pointer"
           title="send"
-          onClick={() => {
-            handleAddChat();
-            props.onChecked();
-          }}
+          onClick={handleAddChat}
         />
       )}
     </footer>

@@ -36,7 +36,7 @@ app.get("/", (req, res) => {
     }
   });
 
-  const friendsQuery = `CREATE TABLE ${frendTable}(id serial primary key,uid integer references ${userTable}(id),name varchar(50),phone varchar(10),pin boolean DEFAULT false);`;
+  const friendsQuery = `CREATE TABLE ${frendTable}(id serial primary key,uid integer,name varchar(50),phone varchar(10),pin boolean DEFAULT false);`;
   db.query(friendsQuery, (err, result) => {
     if (err) {
       console.log(err.message);
@@ -45,7 +45,7 @@ app.get("/", (req, res) => {
     }
   });
 
-  const chatQuery = `CREATE TABLE ${chatTable}(id serial primary key,uid integer references ${userTable}(id),fid integer references ${frendTable}(id),username varchar(100),friendname varchar(100),userphone varchar(10),friendphone varchar(10),text varchar(200));`;
+  const chatQuery = `CREATE TABLE ${chatTable}(id serial primary key,uid integer,fid integer,username varchar(100),friendname varchar(100),userphone varchar(10),friendphone varchar(10),text varchar(200));`;
   db.query(chatQuery, (err, response) => {
     if (err) {
       console.log(err.message);
@@ -58,6 +58,7 @@ app.get("/", (req, res) => {
 //Register User
 app.post("/register", (req, res) => {
   const { name, phone, password } = req.body;
+  console.log("Registering User");
   const subregQuery = `SELECT * FROM ${userTable} where name = $1;`;
   db.query(subregQuery, [name], (error, response) => {
     if (error) {
@@ -83,6 +84,7 @@ app.post("/register", (req, res) => {
 //Login User
 app.post("/login", (req, res) => {
   const { phone, password } = req.body;
+  console.log("Logining User");
   const logQuery = `SELECT * FROM ${userTable} WHERE phone=$1 and password=$2;`;
   db.query(logQuery, [phone, password], (err, result) => {
     if (err) {
@@ -122,6 +124,7 @@ app.post("/login", (req, res) => {
 //Forgot Password
 app.post("/forgot", (req, res) => {
   const { phone, password } = req.body;
+  console.log("Forgot Password");
   const forgotQuery = `UPDATE ${userTable} SET password=$2 WHERE phone=$1 RETURNING *;`;
   const checkUser = `SELECT * FROM ${userTable} WHERE phone=$1;`;
   db.query(checkUser, [phone], (err, result) => {
@@ -149,6 +152,7 @@ app.post("/forgot", (req, res) => {
 //Adding New Friend
 app.post("/addfrend", (req, res) => {
   const { uid, name, phone } = req.body;
+  console.log("Adding New Friend");
   const addFriendQuery = `INSERT INTO ${frendTable} (uid,name,phone) VALUES ($1,$2,$3) RETURNING *;`;
   db.query(addFriendQuery, [uid, name, phone], (err, result) => {
     if (err) {
@@ -164,6 +168,7 @@ app.post("/addfrend", (req, res) => {
 //Get Friends List
 app.post("/getFriends", (req, res) => {
   const { uid } = req.body;
+  console.log("Getting all Friends of particular " + uid + " user");
   const getFriendsQuery = `SELECT * FROM ${frendTable} WHERE uid=$1;`;
   db.query(getFriendsQuery, [uid], (err, result) => {
     if (err) {
@@ -179,6 +184,7 @@ app.post("/getFriends", (req, res) => {
 //Get Friend Chat
 app.post("/renderfriendchat", (req, res) => {
   const { uphone, fphone } = req.body;
+  console.log("Rendering Friend Chat");
   const renderQuery = `SELECT * FROM ${chatTable} WHERE (userphone=$2 and friendphone=$1) order by id asc;`;
   db.query(renderQuery, [uphone, fphone], (err, response) => {
     if (err) {
@@ -195,6 +201,7 @@ app.post("/renderfriendchat", (req, res) => {
 //Get User Chat
 app.post("/renderuserchat", (req, res) => {
   const { uid, fid } = req.body;
+  console.log("Rendering user Chat");
   const renderQuery = `SELECT * FROM ${chatTable} WHERE uid=$1 and fid=$2 order by id asc;`;
   db.query(renderQuery, [uid, fid], (err, response) => {
     if (err) {
@@ -211,6 +218,7 @@ app.post("/renderuserchat", (req, res) => {
 //Adding Chats
 app.post("/addchat", (req, res) => {
   const { uid, fid, uname, fname, uphone, fphone, text } = req.body;
+  console.log("Adding Chat");
   const addChatQuery = `INSERT INTO ${chatTable} (uid,fid,username,friendname,userphone,friendphone,text) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *;`;
   db.query(
     addChatQuery,
@@ -230,7 +238,7 @@ app.post("/addchat", (req, res) => {
 //Handling Pins
 app.post("/handlepin", (req, res) => {
   const { fid, uid } = req.body;
-  console.log("Friend and User Id: " + fid + " " + uid);
+  console.log("Adding Pin");
   const pinQuery = `UPDATE ${frendTable} SET pin = NOT pin WHERE id = $1 AND uid = $2 RETURNING *;`;
   db.query(pinQuery, [fid, uid], (err, result) => {
     if (err) {
@@ -249,6 +257,7 @@ app.post("/handlepin", (req, res) => {
 //Get Pins
 app.post("/getpin", (req, res) => {
   const { fid, uid } = req.body;
+  console.log("Getting Pin for particular fid and uid");
   console.log("Friend and User Id: " + fid + " " + uid);
   const pinQuery = `SELECT * from ${frendTable} WHERE id = $1 AND uid = $2;`;
   db.query(pinQuery, [fid, uid], (err, result) => {
@@ -268,6 +277,7 @@ app.post("/getpin", (req, res) => {
 //Handle Rename
 app.post("/rename", (req, res) => {
   const { uid, fid, value } = req.body;
+  console.log("Renaming the friend");
   const renameQuery = `UPDATE ${frendTable} SET name=$3 where uid=$1 and id=$2 RETURNING *;`;
   db.query(renameQuery, [uid, fid, value], (err, result) => {
     if (err) {
@@ -283,6 +293,7 @@ app.post("/rename", (req, res) => {
 //Delete Friend
 app.delete("/deletefriend", (req, res) => {
   const { uid, fid } = req.body;
+  console.log("Deleting the friend");
   const deleteQuery = `DELETE FROM ${frendTable} where uid=$1 and id=$2;`;
   db.query(deleteQuery, [uid, fid], (err, result) => {
     if (err) {
@@ -298,7 +309,7 @@ app.delete("/deletefriend", (req, res) => {
 //Get Particular Chat
 app.post("/getchat", (req, res) => {
   const { uid, fid, id } = req.body;
-  console.log("Get particular chat: " + uid + " " + fid + " " + id);
+  console.log("Get particular chat ");
   const getchatQuery = `SELECT * from ${chatTable} where uid=$1 and fid=$2 and id=$3;`;
   db.query(getchatQuery, [uid, fid, id], (err, result) => {
     if (err) {
@@ -314,7 +325,7 @@ app.post("/getchat", (req, res) => {
 //Update Particular Chat
 app.post("/updatechat", (req, res) => {
   const { uid, fid, id, text } = req.body;
-  console.log("Chat details: " + uid + " " + fid + " " + id + " " + text);
+  console.log("Update Particular Chat");
   const updatechatQuery = `UPDATE ${chatTable} SET text=$4 where uid=$1 and fid=$2 and id=$3;`;
   db.query(updatechatQuery, [uid, fid, id, text], (err, result) => {
     if (err) {
@@ -330,6 +341,7 @@ app.post("/updatechat", (req, res) => {
 //Delete Particular Chat
 app.delete("/deletechat", (req, res) => {
   const { id, uid, fid } = req.body;
+  console.log("Deleting particular chat");
   const deleteQuery = `DELETE FROM ${chatTable} where id=$1 and uid=$2 and fid=$3;`;
   db.query(deleteQuery, [id, uid, fid], (err, result) => {
     if (err) {
@@ -344,6 +356,7 @@ app.delete("/deletechat", (req, res) => {
 
 //Get All Users
 app.get("/users", (req, res) => {
+  console.log("Getting all users list");
   db.query(`SELECT * from ${userTable}`, (err, result) => {
     if (err) {
       console.log(err.message);
