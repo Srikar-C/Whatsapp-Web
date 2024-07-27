@@ -52,17 +52,19 @@ export default function GetFriends(props) {
   }
 
   return (
-    <div className="gap-1 flex flex-col h-[80vh] overflow-scroll">
+    <div className="gap-2 flex flex-col h-[90vh] bg-[#FDFFE2] pt-5 overflow-y-scroll">
       {friends?.map((item, index) => {
         return (
           <div
             className="flex flex-col gap-1 items-center cursor-pointer"
             key={item.id}
-            onClick={(e) => handleChat(e, item.name, item.phone, item.id)}
+            onClick={(e) =>
+              handleChat(e, item.friendname, item.friendphone, item.id)
+            }
           >
             <FriendCard
-              name={item.name}
-              phone={item.phone}
+              name={item.friendname}
+              phone={item.friendphone}
               fidx={item.id}
               uidx={item.uid}
               pin={item.pin}

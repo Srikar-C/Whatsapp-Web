@@ -46,20 +46,26 @@ export default function FriendCard(props) {
   }
 
   return (
-    <Card className="w-[90%] self-center flex flex-row justify-between items-center ">
+    <Card className="w-[90%] self-center flex flex-row justify-between items-center">
       {re ? (
         <CardHeader
           avatar={
-            <Avatar sx={{ bgcolor: "#4F6F52" }} aria-label="recipe">
+            <Avatar
+              sx={{ bgcolor: "#1A2130", fontSize: "16px" }}
+              aria-label="recipe"
+            >
               {props.name.substring(0, 2).toUpperCase()}
             </Avatar>
           }
-          title={props.name}
+          title={
+            props.name.substring(0, 1).toUpperCase() +
+            props.name.substring(1).toLowerCase()
+          }
           subheader={props.phone}
         />
       ) : (
         <div className="flex p-4 gap-2">
-          <Avatar sx={{ bgcolor: "#4F6F52" }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: "#1A2130" }} aria-label="recipe">
             {props.name.substring(0, 2).toUpperCase()}
           </Avatar>
           <div className="input flex w-fit justify-evenly items-center border-2 border-gray-400 rounded-md">

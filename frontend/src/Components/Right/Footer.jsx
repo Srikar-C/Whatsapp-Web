@@ -14,38 +14,42 @@ export default function Footer(props) {
   }, [props.ifEdit, props.editmsg]);
 
   function handleAddChat() {
-    fetch("http://localhost:3000/addchat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        uid: props.uid,
-        fid: props.fid,
-        uname: props.uname,
-        fname: props.fname,
-        uphone: props.uphone,
-        fphone: props.fphone,
-        text: msg,
-      }),
-    })
-      .then((response) => {
-        if (response.status === 201) {
-          return response.json();
-        } else if (response.status === 500) {
-          return Promise.reject("Error");
-        }
+    if (msg !== "") {
+      fetch("http://localhost:3000/addchat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          uid: props.uid,
+          fid: props.fid,
+          uname: props.uname,
+          uphone: props.uphone,
+          fname: props.fname,
+          fphone: props.fphone,
+          text: msg,
+        }),
       })
-      .then((data) => {
-        setMsg("");
-        props.onChecked();
-        console.log("Message Successfully Inserted");
-        console.log("Footer.jsx->Data: " + data);
-      })
-      .catch((err) => {
-        alert(err);
-        console.log("Footer.jsx->Error: " + err);
-      });
+        .then((response) => {
+          if (response.status === 201) {
+            return response.json();
+          } else if (response.status === 500) {
+            return Promise.reject("Error");
+          }
+        })
+        .then((data) => {
+          setMsg("");
+          props.onChecked();
+          console.log("Message Successfully Inserted");
+          console.log("Footer.jsx->Data: " + data);
+        })
+        .catch((err) => {
+          alert(err);
+          console.log("Footer.jsx->Error: " + err);
+        });
+    } else {
+      alert("Type something");
+    }
   }
 
   console.log(
@@ -53,7 +57,7 @@ export default function Footer(props) {
   );
 
   return (
-    <footer className="h-[10vh] flex items-center justify-between px-3 rounded-bl-xl rounded-br-xl bg-slate-200">
+    <footer className="h-[10vh] flex items-center justify-between px-3 rounded-bl-xl rounded-br-xl bg-[#FDFFE2]">
       <GrEmoji className="text-4xl font-light" title="Add Emojies" />
       <RiAttachment2 className="text-4xl font-light" title="Attachments" />
       {props.ifEdit ? (

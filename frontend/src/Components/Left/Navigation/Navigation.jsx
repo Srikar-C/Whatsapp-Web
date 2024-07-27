@@ -4,11 +4,13 @@ import Navdrop from "./Navdrop";
 
 export default function Navigation(props) {
   return (
-    <nav className="bg-[#4F6F52] h-[10vh] flex justify-between items-center px-2">
+    <nav className="bg-[#1A2130] h-[10vh] flex justify-between items-center px-2">
       <header className="">
-        <SiWhatsapp className="text-4xl text-white " />
+        <SiWhatsapp className="text-4xl text-white" />
       </header>
-      <p className="text-white uppercase font-semibold">{props.username}</p>
+      <p className="text-white text-xl uppercase font-semibold">
+        {props.username}
+      </p>
       <nav className="flex flex-row gap-3 items-center">
         <MdOutlineAddToPhotos
           className="text-2xl text-white cursor-pointer"
@@ -17,7 +19,11 @@ export default function Navigation(props) {
             props.isFriend();
           }}
         />
-        <Navdrop />
+        <Navdrop
+          onChecked={() => {
+            props.onChecked();
+          }}
+        />
       </nav>
     </nav>
   );

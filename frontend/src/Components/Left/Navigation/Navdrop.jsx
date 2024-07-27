@@ -17,6 +17,11 @@ export default function Navdrop(props) {
     setAnchorEl(null);
   };
 
+  function handleAccount() {
+    props.onChecked();
+    handleClose();
+  }
+
   return (
     <div>
       <Button
@@ -41,8 +46,7 @@ export default function Navdrop(props) {
         onClose={handleClose}
         TransitionComponent={Fade}
       >
-        <MenuItem onClick={handleClose}>Account</MenuItem>
-        <MenuItem onClick={handleClose}>Settings</MenuItem>
+        <MenuItem onClick={handleAccount}>Account</MenuItem>
         <Link to="/">
           <MenuItem onClick={handleClose}>Logout</MenuItem>
         </Link>

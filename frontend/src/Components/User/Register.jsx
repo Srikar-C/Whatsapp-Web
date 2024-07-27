@@ -1,7 +1,9 @@
 import { useState } from "react";
-import logo from "../../assets/logo.png";
+import logo from "../../assets/logo2.png";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+// import "./externalcss.css";
+
 export default function Register() {
   const [name, setName] = useState("");
   const [phn, setPhn] = useState("");
@@ -47,18 +49,18 @@ export default function Register() {
   }
 
   return (
-    <div className="bg-[#4F6F52] h-screen flex items-center justify-center">
-      <div className=" w-[25%] bg-[#F5EFE6] p-8 rounded-lg shadow-lg shadow-[#E8DFCA] border-4 border-white">
+    <div className="gradient-bg h-screen flex items-center justify-center">
+      <div className=" w-[25%] bg-[#5A72A0] p-8 rounded-lg shadow-xl shadow-[#FDFFE2] border-4 border-[#83B4FF]">
         <Link to="/">
           <div className="w-20 mx-auto mb-6">
             <img
               src={logo}
               alt="logo"
-              className="w-full h-20 object-cover rounded-full border-4 border-[#1A4D2E] shadow-lg"
+              className="w-full h-20 object-cover rounded-full border-4 border-[#83B4FF] "
             />
           </div>
         </Link>
-        <div className="text-center text-lg font-bold text-[#1A4D2E] mb-4 hover:text-[#1A4D2E]">
+        <div className="text-center text-lg font-bold text-[#FDFFE2] mb-4 tracking-widest">
           Whatsapp
         </div>
         <div className="space-y-4">
@@ -67,7 +69,7 @@ export default function Register() {
             <input
               type="text"
               placeholder="Username"
-              className="w-full bg-transparent outline-none text-gray-600 text-base"
+              className="w-full bg-transparent outline-none text-[#FDFFE2] text-base"
               onChange={(e) => setName(e.target.value)}
               value={name}
             />
@@ -77,7 +79,7 @@ export default function Register() {
             <input
               type="text"
               placeholder="Phone Number"
-              className="w-full bg-transparent outline-none text-gray-600 text-base"
+              className="w-full bg-transparent outline-none text-[#FDFFE2] text-base"
               onChange={(e) => setPhn(e.target.value)}
               value={phn}
             />
@@ -87,24 +89,27 @@ export default function Register() {
             <input
               type={passEye ? "text" : "password"}
               placeholder="Password"
-              className="w-full bg-transparent outline-none text-gray-600 text-base"
+              className="w-full bg-transparent outline-none text-[#FDFFE2] text-base"
               onChange={(e) => setPass(e.target.value)}
               value={pass}
             />
-            <span onClick={() => setPassEye(!passEye)}>
+            <span
+              onClick={() => setPassEye(!passEye)}
+              className="cursor-pointer text-[#83B4FF]"
+            >
               {passEye ? <FaEye /> : <FaEyeSlash />}
             </span>
           </div>
           <button
             type="submit"
             onClick={handleRegister}
-            className="w-full bg-[#4F6F52] text-white rounded-full py-2 text-center font-semibold hover:bg-[#1A4D2E] shadow-lg"
+            className="w-full bg-[#83B4FF] text-[#1A2130] hover:text-white rounded-full py-2 text-center font-semibold hover:bg-[#1A2130] shadow-lg"
           >
             Create Account
           </button>
         </div>
         <div className="text-center flex flex-row gap-1 items-center justify-center text-sm text-gray-500 mt-4 hover:*:font-semibold ">
-          <Link to="/login" className="text-[#4F6F52] hover:text-[#1A4D2E]">
+          <Link to="/login" className="text-[#FDFFE2] hover:text-[#1A2130]">
             Sign In
           </Link>
         </div>

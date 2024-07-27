@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import Navigation from "./Navigation/Navigation";
 import AddingFriends from "./FriendsManagement/AddingFriends";
-import Search from "./Search";
 import GetFriends from "./FriendsManagement/GetFriends";
+import RequestFriends from "./Requests/RequestFriends";
 
 export default function Left(props) {
   const [addfriend, setAddfriend] = useState(false);
   const [friends, setFriends] = useState([]);
+  const [isrequest, setRequest] = useState(false);
+  const [rqFriends, setRFriends] = useState([]);
+  const [listrequests, setListRequest] = useState(false);
 
   function handleFriends() {
     fetch("http://localhost:3000/getFriends", {
@@ -35,8 +38,38 @@ export default function Left(props) {
       });
   }
 
+  function handleRequest() {
+    fetch("http://localhost:3000/findrequest", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userphone: props.userphone }),
+    })
+      .then((response) => {
+        if (response.status === 201) {
+          return response.json();
+        } else if (response.status === 500) {
+          return Promise.reject("Error");
+        } else if (response.status === 404) {
+          setRequest(false);
+          return Promise.reject("No Requests");
+        }
+      })
+      .then((data) => {
+        console.log("Requestes are there");
+        setRequest(true);
+        setRFriends(data);
+      })
+      .catch((err) => {
+        alert(err);
+        console.log("Left.jsx-> Error in Request Friends: " + err);
+      });
+  }
+
   useEffect(() => {
     handleFriends();
+    handleRequest();
   }, [props.userid]);
 
   function handleFrendChat(fname, fphone, fidx) {
@@ -60,9 +93,16 @@ export default function Left(props) {
       })
       .then((data) => {
         alert("Renamed Successfully");
-        console.log("Left.jsx->Data: " + data);
+        console.log(
+          "Left.jsx->Data: " +
+            data.id +
+            " " +
+            data.friendphone +
+            " " +
+            data.friendname
+        );
         handleFriends();
-        handleFrendChat(data.name, data.phone, data.id);
+        handleFrendChat(data.friendname, data.friendphone, data.id);
       })
       .catch((err) => {
         alert(err);
@@ -89,6 +129,7 @@ export default function Left(props) {
         alert("Friend deleted Successfully");
         console.log(data);
         handleFriends();
+        props.default();
       })
       .catch((err) => {
         alert(err);
@@ -96,16 +137,32 @@ export default function Left(props) {
       });
   }
 
+  function openRequests() {
+    setListRequest(!listrequests);
+    setRequest(!isrequest);
+  }
+
   return (
     <div className="flex flex-col mx-auto">
       <Navigation
         isFriend={() => setAddfriend(!addfriend)}
         username={props.username}
+        onChecked={() => {
+          props.onChange();
+        }}
       />
-      <Search />
+      {isrequest ? (
+        <div onClick={openRequests} className="cursor-pointer">
+          Friends Request
+        </div>
+      ) : (
+        ""
+      )}
       {addfriend ? (
         <AddingFriends
           userid={props.userid}
+          username={props.username}
+          userphone={props.userphone}
           isFriend={() => {
             setAddfriend(!addfriend);
             handleFriends();
@@ -114,12 +171,25 @@ export default function Left(props) {
       ) : (
         ""
       )}
-      <GetFriends
-        friends={friends}
-        onChecked={handleFrendChat}
-        onChange={handleRename}
-        ondelete={handleDelete}
-      />
+      {listrequests ? (
+        <RequestFriends
+          friends={rqFriends}
+          onChange={openRequests}
+          userid={props.userid}
+          onChecked={() => {
+            handleRequest();
+            handleFriends();
+            setListRequest(!listrequests);
+          }}
+        />
+      ) : (
+        <GetFriends
+          friends={friends}
+          onChecked={handleFrendChat}
+          onChange={handleRename}
+          ondelete={handleDelete}
+        />
+      )}
     </div>
   );
 }

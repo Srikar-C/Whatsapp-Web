@@ -16,7 +16,9 @@ export default function Footer(props) {
         uid: props.uid,
         fid: props.fid,
         uname: props.uname,
+        uphone: props.uphone,
         fname: props.fname,
+        fphone: props.fphone,
         text: msg,
       }),
     })
