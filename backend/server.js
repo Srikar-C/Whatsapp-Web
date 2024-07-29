@@ -74,7 +74,7 @@ app.post("/register", (req, res) => {
     if (error) {
       return res.status(500).json({ message: error.message });
     } else if (response.rows.length > 0) {
-      console.log("Username already Exist");
+      // console.log("Username already Exist");
       return res.status(303).json({ message: "Username already Exist" });
     } else {
       const regQuery = `INSERT INTO ${userTable} (name,phone,password) VALUES ($1,$2,$3) RETURNING *;`;
@@ -83,7 +83,7 @@ app.post("/register", (req, res) => {
           console.log(err.message);
           return res.status(500).json({ message: err.message });
         } else {
-          console.log("User Insertion Completed");
+          // console.log("User Insertion Completed");
           return res.status(201).json(result.rows[0]);
         }
       });
@@ -102,7 +102,7 @@ app.post("/login", (req, res) => {
       return res.status(500).send({ message: err.message });
     } else {
       if (result.rows.length === 1) {
-        console.log("User exist");
+        // console.log("User exist");
         return res.status(201).send(result.rows[0]);
       } else if (result.rows.length === 0) {
         const sublogQuery = `SELECT * FROM ${userTable} WHERE phone=$1;`;
@@ -112,16 +112,16 @@ app.post("/login", (req, res) => {
             return res.status(500).send({ message: error.message });
           } else {
             if (response.rows.length > 0) {
-              console.log("Phone number exist");
-              console.log(
-                "Type correct Password or Create new password using forgot password button"
-              );
+              // console.log("Phone number exist");
+              // console.log(
+              //   "Type correct Password or Create new password using forgot password button"
+              // );
               return res.status(303).send({
                 message:
                   "Type correct Password or Create new password using forgot password button",
               });
             } else {
-              console.log("User not exist");
+              // console.log("User not exist");
               return res.status(404).send({ message: "User not exist" });
             }
           }
@@ -148,7 +148,7 @@ app.post("/forgot", (req, res) => {
             console.log(error.message);
             return res.status(500).send({ message: error.message });
           } else {
-            console.log("Password updated successfully");
+            // console.log("Password updated successfully");
             return res.status(201).json(response.rows[0]);
           }
         });
@@ -170,10 +170,10 @@ app.post("/isuserpresent", (req, res) => {
       return res.status(500).send({ message: err.message });
     } else {
       if (result.rows.length > 0) {
-        console.log("User Exist");
-        return res.status(201).send(result.rows[0]);
+        // console.log("User Exist");
+        return res.status(201).send({ message: "User exist" });
       } else {
-        console.log("User not Exist");
+        // console.log("User not Exist");
         return res.status(404).send({ message: "User not Exist" });
       }
     }
@@ -193,7 +193,7 @@ app.post("/addfrend", (req, res) => {
         console.log(err.message);
         return res.status(500).send({ message: err.message });
       } else {
-        console.log("Successfully added new friend");
+        // console.log("Successfully added new friend");
         return res.status(201).json(result.rows[0]);
       }
     }
@@ -203,6 +203,7 @@ app.post("/addfrend", (req, res) => {
 //Adding Request
 app.post("/addrequest", (req, res) => {
   const { fromname, fromphone, toname, tophone } = req.body;
+  console.log("Adding Request");
   const requestQuery = `INSERT INTO ${requestTable} (fromname,fromphone,toname,tophone) VALUES ($1,$2,$3,$4) RETURNING *;`;
   db.query(
     requestQuery,
@@ -212,7 +213,7 @@ app.post("/addrequest", (req, res) => {
         console.log(err.message);
         return res.status(500).send({ message: err.message });
       } else {
-        console.log("Request sent successfully");
+        // console.log("Request sent successfully");
         return res.status(201).json(result.rows[0]);
       }
     }
@@ -229,7 +230,7 @@ app.post("/findrequest", (req, res) => {
       return res.status(500).send({ message: err.message });
     } else {
       if (result.rows.length > 0) {
-        console.log("Request found successfully");
+        // console.log("Request found successfully");
         return res.status(201).json(result.rows);
       } else {
         return res.status(404).json({ message: "No Requests" });
@@ -250,7 +251,7 @@ app.post("/acceptreq", (req, res) => {
         console.log(err.message);
         return res.status(500).send({ message: err.message });
       } else {
-        console.log("Request accepted successfully");
+        // console.log("Request accepted successfully");
         return res.status(201).json(result.rows);
       }
     }
@@ -269,7 +270,7 @@ app.delete("/deletereq", (req, res) => {
         console.log(err.message);
         return res.status(500).send({ message: err.message });
       } else {
-        console.log("Request deleted successfully");
+        // console.log("Request deleted successfully");
         return res.status(201).json(result.rows);
       }
     }
@@ -286,7 +287,7 @@ app.post("/allrequest", (req, res) => {
       return res.status(500).send({ message: err.message });
     } else {
       if (result.rows.length > 0) {
-        console.log("Request found successfully");
+        // console.log("Request found successfully");
         return res.status(201).json(result.rows);
       } else {
         return res.status(404).json({ message: "No Requests" });
@@ -304,7 +305,7 @@ app.post("/getFriends", (req, res) => {
       console.log(err.message);
       return res.status(500).send({ message: err.message });
     } else {
-      console.log("Friends list fetched successfully");
+      // console.log("Friends list fetched successfully");
       return res.status(201).json(result.rows);
     }
   });
@@ -320,7 +321,7 @@ app.post("/renderfriendchat", (req, res) => {
       console.log("renderchatuser: ", err.message);
       return res.status(500).json({ message: err.message });
     } else {
-      console.log("Friends List Data fetched successfully" + response.rows);
+      // console.log("Friends List Data fetched successfully" + response.rows);
       //   console.log("Friends List is: " + response.rows);
       return res.status(201).json(response.rows);
     }
@@ -337,7 +338,7 @@ app.post("/renderuserchat", (req, res) => {
       console.log(err.message);
       return res.status(500).json({ message: err.message });
     } else {
-      console.log("User List Data fetched successfully");
+      // console.log("User List Data fetched successfully");
       //   console.log("User List is: " + response.rows);
       return res.status(201).json(response.rows);
     }
@@ -357,7 +358,7 @@ app.post("/addchat", (req, res) => {
         console.log(err.message);
         return res.status(500).send({ message: err.message });
       } else {
-        console.log("Successfully added chats");
+        // console.log("Successfully added chats");
         return res.status(201).json(result.rows[0]);
       }
     }
@@ -387,7 +388,6 @@ app.post("/handlepin", (req, res) => {
 app.post("/getpin", (req, res) => {
   const { fid, uid } = req.body;
   console.log("Getting Pin for particular fid and uid");
-  console.log("Friend and User Id: " + fid + " " + uid);
   const pinQuery = `SELECT * from ${frendTable} WHERE id = $1 AND uid = $2;`;
   db.query(pinQuery, [fid, uid], (err, result) => {
     if (err) {
@@ -413,7 +413,7 @@ app.post("/rename", (req, res) => {
       console.log(err.message);
       return res.status(500).send({ message: err.message });
     } else {
-      console.log("Friend renamed successfully");
+      // console.log("Friend renamed successfully");
       return res.status(201).json(result.rows[0]);
     }
   });
@@ -429,7 +429,7 @@ app.delete("/deletefriend", (req, res) => {
       console.log(err.message);
       return res.status(500).send({ message: err.message });
     } else {
-      console.log("Friend deleted successfully");
+      // console.log("Friend deleted successfully");
       return res.status(201).send({ message: "Friend Deleted" });
     }
   });
@@ -445,7 +445,7 @@ app.post("/getchat", (req, res) => {
       console.log(err.message);
       return res.status(500).send({ message: err.message });
     } else {
-      console.log("Get Particular text: " + result.rows[0]);
+      // console.log("Get Particular text: " + result.rows[0]);
       return res.status(201).json(result.rows[0]);
     }
   });
@@ -461,7 +461,7 @@ app.post("/updatechat", (req, res) => {
       console.log(err.message);
       return res.status(500).send({ message: err.message });
     } else {
-      console.log("Update chat successful");
+      // console.log("Update chat successful");
       return res.status(201).json({ message: "Updated chat" });
     }
   });
@@ -477,7 +477,7 @@ app.delete("/deletechat", (req, res) => {
       console.log(err.message);
       return res.status(500).send({ message: err.message });
     } else {
-      console.log("Chat deleted successfully");
+      // console.log("Chat deleted successfully");
       return res.status(201).send({ message: "Friend Deleted" });
     }
   });
@@ -506,7 +506,7 @@ app.post("/userrename", (req, res) => {
       console.log(err.message);
       return res.status(500).send({ message: err.message });
     } else {
-      console.log("User Name Changed successfully");
+      // console.log("User Name Changed successfully");
       return res.status(201).json({ message: "Updated Username" });
     }
   });
@@ -522,7 +522,7 @@ app.post("/userpassrename", (req, res) => {
       console.log(err.message);
       return res.status(500).send({ message: err.message });
     } else {
-      console.log("Password Changed successfully");
+      // console.log("Password Changed successfully");
       return res.status(201).json({ message: "Updated Username" });
     }
   });
@@ -537,7 +537,7 @@ app.post("/getcrntuser", (req, res) => {
       console.log(err.message);
       return res.status(500).send({ message: err.message });
     } else {
-      console.log("Details: ", result.rows[0]);
+      // console.log("Details: ", result.rows[0]);
       return res.status(201).send(result.rows[0]);
     }
   });

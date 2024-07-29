@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function AddingFriends(props) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [userpresent, setpresent] = useState(false);
+  const [userpresent, setPresent] = useState(false);
 
   function addNewFriend() {
     fetch("http://localhost:3000/isuserpresent", {
@@ -23,84 +23,79 @@ export default function AddingFriends(props) {
         }
       })
       .then((data) => {
-        setpresent(true);
+        console.log("User is updating before: " + userpresent);
+        setPresent(true);
+        console.log("User is updating after: " + userpresent);
+        if (name !== "" && phone !== "") {
+          fetch("http://localhost:3000/addfrend", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              uid: props.userid,
+              username: props.username,
+              userphone: props.userphone,
+              name: name,
+              phone: phone,
+            }),
+          })
+            .then((response) => {
+              if (response.status === 201) {
+                return response.json();
+              } else if (response.status === 500) {
+                return Promise.reject("Error");
+              }
+            })
+            .then((data) => {
+              alert("Friend added successfully");
+              console.log("AddingFriends.js->Data: " + data);
+              setName("");
+              setPhone("");
+            })
+            .catch((err) => {
+              alert(err);
+              console.log("AddingFriends.js->Error: " + err);
+            });
+
+          fetch("http://localhost:3000/addrequest", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              fromname: props.username,
+              fromphone: props.userphone,
+              toname: name,
+              tophone: phone,
+            }),
+          })
+            .then((response) => {
+              if (response.status === 201) {
+                return response.json();
+              } else if (response.status === 500) {
+                return Promise.reject("Error");
+              }
+            })
+            .then((data) => {
+              alert("Request sent successfully");
+              console.log("AddingFriends.js->Data: " + data);
+              setName("");
+              setPhone("");
+            })
+            .catch((err) => {
+              alert(err);
+              console.log("AddingFriends.js->Error: " + err);
+            });
+          props.isFriend();
+        } else {
+          alert("Enter friend details correctly");
+        }
       })
       .catch((err) => {
         alert(err);
         console.log("AddingFriends.jsx-> Error: " + err);
       });
-    if (userpresent) {
-      if (name !== "" && phone !== "") {
-        fetch("http://localhost:3000/addfrend", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            uid: props.userid,
-            username: props.username,
-            userphone: props.userphone,
-            name: name,
-            phone: phone,
-          }),
-        })
-          .then((response) => {
-            if (response.status === 201) {
-              return response.json();
-            } else if (response.status === 500) {
-              return Promise.reject("Error");
-            }
-          })
-          .then((data) => {
-            alert("Friend added successfully");
-            console.log("AddingFriends.js->Data: " + data);
-            setName("");
-            setPhone("");
-          })
-          .catch((err) => {
-            alert(err);
-            console.log("AddingFriends.js->Error: " + err);
-          });
-      } else {
-        alert("Enter friend details correctly");
-      }
-    }
-  }
-
-  function addRequest() {
-    if (userpresent) {
-      if (name !== "" && phone !== "") {
-        fetch("http://localhost:3000/addrequest", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            fromname: props.username,
-            fromphone: props.userphone,
-            toname: name,
-            tophone: phone,
-          }),
-        })
-          .then((response) => {
-            if (response.status === 201) {
-              return response.json();
-            } else if (response.status === 500) {
-              return Promise.reject("Error");
-            }
-          })
-          .then((data) => {
-            alert("Request sent successfully");
-            console.log("AddingFriends.js->Data: " + data);
-            setName("");
-            setPhone("");
-          })
-          .catch((err) => {
-            alert(err);
-            console.log("AddingFriends.js->Error: " + err);
-          });
-      }
-    }
   }
 
   return (
@@ -129,8 +124,6 @@ export default function AddingFriends(props) {
         type="submit"
         onClick={() => {
           addNewFriend();
-          addRequest();
-          props.isFriend();
         }}
         className="w-full bg-[#5A72A0] text-white rounded-full py-2 text-center font-semibold hover:bg-[#1A2130] shadow-lg"
       >

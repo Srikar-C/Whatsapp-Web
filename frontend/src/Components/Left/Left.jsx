@@ -62,7 +62,9 @@ export default function Left(props) {
         setRFriends(data);
       })
       .catch((err) => {
-        alert(err);
+        if (err !== "No Requests") {
+          alert(err);
+        }
         console.log("Left.jsx-> Error in Request Friends: " + err);
       });
   }
@@ -143,7 +145,7 @@ export default function Left(props) {
   }
 
   return (
-    <div className="flex flex-col mx-auto">
+    <div className="flex flex-col mx-auto bg-transparent">
       <Navigation
         isFriend={() => setAddfriend(!addfriend)}
         username={props.username}
@@ -152,7 +154,10 @@ export default function Left(props) {
         }}
       />
       {isrequest ? (
-        <div onClick={openRequests} className="cursor-pointer">
+        <div
+          onClick={openRequests}
+          className="text-center cursor-pointer font-semibold py-3 w-[100%] mx-auto rounded-lg bg-[#5a5a5a54] text-[#000] "
+        >
           Friends Request
         </div>
       ) : (
