@@ -1,6 +1,8 @@
 <h2><u>WHATSAPP WEB CLONE</u></h2>
 An application which focused on few functionalities of Whatsapp web
 
+<h2>Live Website URL: <a href="https://whats-app55.netlify.app/" target="_blank">https://whats-app55.netlify.app/</a></h2>
+
 <h2><u>Demonstration Link</u></h2>
 <h3><a href="https://drive.google.com/file/d/14s7GEqxEKpV5l77oi7coW9j7-7mrxfKc/view?usp=sharing" target="_blank">https://drive.google.com/file/d/14s7GEqxEKpV5l77oi7coW9j7-7mrxfKc/view?usp=sharing</a></h3>
 
