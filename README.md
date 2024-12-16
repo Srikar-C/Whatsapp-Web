@@ -11,7 +11,6 @@ An application which focused on few functionalities of Whatsapp web
 whatsappweb
 ├── backend
 │   ├── database.js
-│   ├── node_modules
 │   ├── package-lock.json
 │   ├── package.json
 │   └── server.js
@@ -23,7 +22,8 @@ whatsappweb
     ├── package.json
     ├── postcss.config.js
     ├── public
-    │   └── vite.svg
+    │   ├── vite.svg
+    │   └── _redirects
     ├── README.md
     ├── src
     │   ├── App.css
@@ -33,33 +33,61 @@ whatsappweb
     │   │   ├── right.png
     │   │   └── video.mp4
     │   ├── Components
-    │   │   ├── Dashboard.jsx
+    │   │   ├── Dashboard
+    │   │   │   ├── Dashboard.jsx
+    │   │   │   └── utils.js
     │   │   ├── Landing
-    │   │   │   ├── Chats.jsx
+    │   │   │   ├── Chatting.jsx
     │   │   │   ├── Landing.jsx
     │   │   │   ├── Navigation.jsx
     │   │   │   └── Video.jsx
     │   │   ├── Left
     │   │   │   ├── Friends
-    │   │   │   │   ├── AddFriend.jsx
-    │   │   │   │   ├── DisplayFriends.jsx
-    │   │   │   │   ├── FriendCard.jsx
-    │   │   │   │   └── FriendDrop.jsx
-    │   │   │   ├── Left.jsx
+    │   │   │   │   ├── AddFriend
+    │   │   │   │   │   ├── AddFriend.jsx
+    │   │   │   │   │   └── utils.js
+    │   │   │   │   └── DisplayFriends
+    │   │   │   │       ├── DisplayFriends.jsx
+    │   │   │   │       └── FriendCard
+    │   │   │   │           ├── FriendCard.jsx
+    │   │   │   │           ├── FriendDrop.jsx
+    │   │   │   │           └── utils.js
+    │   │   │   ├── LeftBar
+    │   │   │   │   ├── Left.jsx
+    │   │   │   │   ├── Search.jsx
+    │   │   │   │   └── utils.js
     │   │   │   ├── Navigation
     │   │   │   │   ├── UserDrop.jsx
     │   │   │   │   └── UserNav.jsx
     │   │   │   └── Requests
     │   │   │       ├── DisplayRequests.jsx
-    │   │   │       └── RequestCard.jsx
+    │   │   │       ├── RequestCard.jsx
+    │   │   │       └── utils.js
     │   │   ├── Right
-    │   │   │   ├── Account.jsx
     │   │   │   ├── ChatRoom
-    │   │   │   │   ├── Chat.jsx
-    │   │   │   │   ├── ChatDrop.jsx
-    │   │   │   │   ├── ChatNav.jsx
-    │   │   │   │   ├── ChatType.jsx
-    │   │   │   │   └── DisplayChats.jsx
+    │   │   │   │   ├── AccountDetails
+    │   │   │   │   │   ├── Account
+    │   │   │   │   │   │   ├── Account.jsx
+    │   │   │   │   │   │   ├── account.module.css
+    │   │   │   │   │   │   └── utils.js
+    │   │   │   │   │   └── Fields
+    │   │   │   │   │       ├── Email.jsx
+    │   │   │   │   │       ├── Name.jsx
+    │   │   │   │   │       ├── OTP.jsx
+    │   │   │   │   │       ├── Password.jsx
+    │   │   │   │   │       └── Phone.jsx
+    │   │   │   │   ├── Chat
+    │   │   │   │   │   ├── Chat.jsx
+    │   │   │   │   │   └── utils.js
+    │   │   │   │   ├── ChatDisplay
+    │   │   │   │   │   ├── ChatDrop.jsx
+    │   │   │   │   │   └── DisplayChats.jsx
+    │   │   │   │   ├── ChatNav
+    │   │   │   │   │   └── ChatNav.jsx
+    │   │   │   │   └── ChatType
+    │   │   │   │       ├── ChatType.jsx
+    │   │   │   │       ├── UploadDocs.jsx
+    │   │   │   │       └── utils.js
     │   │   │   └── Right.jsx
     │   │   └── Users
     │   │       ├── Forgot.jsx
@@ -67,9 +95,13 @@ whatsappweb
     │   │       ├── Passwords.jsx
     │   │       ├── Register.jsx
     │   │       ├── usercss.css
-    │   │       └── Verify.jsx
+    │   │       ├── utils.js
+    │   │       ├── VerifyAccount.jsx
+    │   │       └── VerifyPass.jsx
     │   ├── index.css
-    │   └── main.jsx
+    │   ├── main.jsx
+    │   ├── Spinner.jsx
+    │   └── url.jsx
     ├── tailwind.config.js
     └── vite.config.js
 
