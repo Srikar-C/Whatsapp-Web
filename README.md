@@ -122,11 +122,11 @@ Clone the repo
   </ul>
   <h3>Run Backend</h3>
   <ul>
+    <li><b>Note:</b> Make sure to replace the password with your password in server.js and database.js.</li>
     <li>cd backend</li>
     <li>npm install</li>
     <li>node database.js</li>
     <li>Exit from terminal if database created</li>
     <li>nodemon server.js</li>
-      <li><b>Note:</b> Make sure to change the password in server.js and database.js.</li>
   </ul>
 </h2>
