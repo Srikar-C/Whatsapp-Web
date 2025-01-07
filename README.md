@@ -119,6 +119,7 @@ Clone the repo
     <li>cd frontend</li>
     <li>npm install</li>
     <li>npm run dev</li>
+    <li><b>Note:</b> Make sure to change the url in url.js file to localhost</li>
   </ul>
   <h3>Run Backend</h3>
   <ul>
