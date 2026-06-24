@@ -22,6 +22,7 @@ export default function Register() {
      const [phone, setPhone] = useState("");
      const [pass, setPass] = useState("");
      const [spin, setSpin] = useState(false);
+     // xsmtpsib-78cbcfe4be1bef6ea3ccb51c1fd32b94c37e236c3b47218b5e563484322f4ed4-5ZdEPB09OhiMzCDF
 
      useEffect(() => {
           AOS.init({ duration: 1000 });
@@ -62,9 +63,8 @@ export default function Register() {
                               <FaUserAlt className="text-[#4F200D] w-[25px] text-xl" />
                               <input
                                    type="text"
-                                   className={`${
-                                        spin ? "cursor-not-allowed" : ""
-                                   } border-none outline-none bg-transparent text-[#4F200D] font-medium`}
+                                   className={`${spin ? "cursor-not-allowed" : ""
+                                        } border-none outline-none bg-transparent text-[#4F200D] font-medium`}
                                    placeholder="Enter Name"
                                    value={name}
                                    onChange={(e) => setName(e.target.value)}
@@ -75,9 +75,8 @@ export default function Register() {
                               <MdEmail className="text-[#4F200D] w-[25px] text-2xl" />
                               <input
                                    type="text"
-                                   className={`${
-                                        spin ? "cursor-not-allowed" : ""
-                                   } border-none outline-none bg-transparent text-[#4F200D] font-medium`}
+                                   className={`${spin ? "cursor-not-allowed" : ""
+                                        } border-none outline-none bg-transparent text-[#4F200D] font-medium`}
                                    placeholder="Enter Email"
                                    value={email}
                                    onChange={(e) => setEmail(e.target.value)}
@@ -88,9 +87,8 @@ export default function Register() {
                               <FaPhoneAlt className="text-[#4F200D] w-[25px] text-xl" />
                               <input
                                    type="text"
-                                   className={`${
-                                        spin ? "cursor-not-allowed" : ""
-                                   } border-none outline-none bg-transparent text-[#4F200D] font-medium`}
+                                   className={`${spin ? "cursor-not-allowed" : ""
+                                        } border-none outline-none bg-transparent text-[#4F200D] font-medium`}
                                    placeholder="Enter Phone Number"
                                    value={phone}
                                    onChange={(e) => setPhone(e.target.value)}
@@ -101,9 +99,8 @@ export default function Register() {
                               <RiLockPasswordFill className="text-[#4F200D] w-[25px] text-xl" />
                               <input
                                    type={passEye ? "text" : "password"}
-                                   className={`${
-                                        spin ? "cursor-not-allowed" : ""
-                                   } border-none outline-none bg-transparent text-[#4F200D] font-medium`}
+                                   className={`${spin ? "cursor-not-allowed" : ""
+                                        } border-none outline-none bg-transparent text-[#4F200D] font-medium`}
                                    placeholder="Enter Password"
                                    value={pass}
                                    onChange={(e) => setPass(e.target.value)}
@@ -118,9 +115,8 @@ export default function Register() {
                          </div>
                          <button
                               onClick={handleRegistration}
-                              className={`${
-                                   spin ? "cursor-not-allowed" : ""
-                              } hover:border-2 hover:border-[#4F200D] text-[#4F200D] px-3 py-1 justify-center mx-auto flex items-center gap-3 rounded-full bg-[#FFD93D] font-semibold`}
+                              className={`${spin ? "cursor-not-allowed" : ""
+                                   } hover:border-2 hover:border-[#4F200D] text-[#4F200D] px-3 py-1 justify-center mx-auto flex items-center gap-3 rounded-full bg-[#FFD93D] font-semibold`}
                          >
                               {spin ? (
                                    <PuffLoader size={30} color="#4F200D" />

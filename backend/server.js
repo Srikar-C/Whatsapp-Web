@@ -251,7 +251,7 @@ app.post("/send-email-register", (req, res) => {
           auth: {
                user: process.env.EMAIL,
                pass: process.env.PASSWORD,
-               // xsmtpsib-78cbcfe4be1bef6ea3ccb51c1fd32b94c37e236c3b47218b5e563484322f4ed4-5ZdEPB09OhiMzCDF
+
           },
           connectionTimeout: 60000,
           greetingTimeout: 60000,
