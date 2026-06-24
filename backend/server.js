@@ -216,6 +216,41 @@ app.post("/login", (req, res) => {
           }
      });
 });
+
+import axios from "axios";
+
+app.get("/test-brevo", async (req, res) => {
+     try {
+          const response = await axios.post(
+               "https://api.brevo.com/v3/smtp/email",
+               {
+                    sender: {
+                         name: "WhatsApp Clone",
+                         email: "209X1A0540@gprec.ac.in"
+                    },
+                    to: [
+                         {
+                              email: "209X1A0540@gprec.ac.in"
+                         }
+                    ],
+                    subject: "Brevo Test",
+                    textContent: "Hello from Render"
+               },
+               {
+                    headers: {
+                         "api-key": process.env.PASSWORD,
+                         "Content-Type": "application/json"
+                    }
+               }
+          );
+
+          res.json(response.data);
+     } catch (err) {
+          console.error(err.response?.data || err.message);
+          res.status(500).json(err.response?.data || err.message);
+     }
+});
+
 //Sending OPT for new user
 app.post("/send-email-register", (req, res) => {
      const { to, subject, text, phone } = req.body;
