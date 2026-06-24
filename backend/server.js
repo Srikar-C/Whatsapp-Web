@@ -279,59 +279,92 @@ app.post("/send-email-register", (req, res) => {
                .send({ message: "Invalid email address", type: "warn" });
      }
      console.log("cred-> " + process.env.EMAIL + " " + process.env.PASSWORD);
-     const transporter = nodemailer.createTransport({
-          host: "smtp-relay.brevo.com",
-          port: 587,
-          secure: false,
-          auth: {
-               user: process.env.EMAIL,
-               pass: process.env.PASSWORD,
-
+     const response = await axios.post(
+          "https://api.brevo.com/v3/smtp/email",
+          {
+               sender: {
+                    name: "WhatsApp Clone",
+                    email: process.env.EMAIL,
+               },
+               to: [
+                    {
+                         email: to,
+                    },
+               ],
+               subject: subject,
+               textContent:
+                    "Follow these steps to verify your account\n\n" +
+                    "Your OTP is: " +
+                    text +
+                    "\n\nEnter this OTP in the application.",
           },
-          connectionTimeout: 60000,
-          greetingTimeout: 60000,
-          socketTimeout: 60000,
-     });
-     // const transporter = nodemailer.createTransport({
-     //      service: "Gmail",
-     //      auth: {
-     //           user: process.env.EMAIL,
-     //           pass: process.env.PASSWORD,
-     //      },
-     // });
-     const mailOptions = {
-          from: process.env.EMAIL,
-          to: to,
-          subject: subject,
-          text:
-               "Follow These steps to change your password\n" +
-               "1) Enter this OTP: " +
-               text +
-               "\n" +
-               "2) Click on Verify OTP\n",
-     };
-     console.log("Creating transporter...");
-
-     transporter.verify((err, success) => {
-          if (err) {
-               console.error("VERIFY ERROR:", err);
-          } else {
-               console.log("SMTP server ready");
+          {
+               headers: {
+                    accept: "application/json",
+                    "api-key": process.env.BREVO,
+                    "content-type": "application/json",
+               },
           }
-     });
+     );
 
+     console.log("Email Sent:", response.data);
 
-     transporter.sendMail(mailOptions, (error, info) => {
-          if (error) {
-               console.error(error);
-               return res.status(500).send({ message: error.message });
-          } else {
-               console.log("Mail Sent");
-               return res
-                    .status(201)
-                    .send({ message: "Email sent successfully" });
-          }
+     return res.status(200).json({
+          message: "Email sent successfully",
      });
+     /*  const transporter = nodemailer.createTransport({
+            host: "smtp-relay.brevo.com",
+            port: 587,
+            secure: false,
+            auth: {
+                 user: process.env.EMAIL,
+                 pass: process.env.PASSWORD,
+  
+            },
+            connectionTimeout: 60000,
+            greetingTimeout: 60000,
+            socketTimeout: 60000,
+       });
+       // const transporter = nodemailer.createTransport({
+       //      service: "Gmail",
+       //      auth: {
+       //           user: process.env.EMAIL,
+       //           pass: process.env.PASSWORD,
+       //      },
+       // });
+       const mailOptions = {
+            from: process.env.EMAIL,
+            to: to,
+            subject: subject,
+            text:
+                 "Follow These steps to change your password\n" +
+                 "1) Enter this OTP: " +
+                 text +
+                 "\n" +
+                 "2) Click on Verify OTP\n",
+       };
+       console.log("Creating transporter...");
+  
+       transporter.verify((err, success) => {
+            if (err) {
+                 console.error("VERIFY ERROR:", err);
+            } else {
+                 console.log("SMTP server ready");
+            }
+       });
+  
+  
+       transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                 console.error(error);
+                 return res.status(500).send({ message: error.message });
+            } else {
+                 console.log("Mail Sent");
+                 return res
+                      .status(201)
+                      .send({ message: "Email sent successfully" });
+            }
+       }); */
 });
 // app.post("/send-email-register", async (req, res) => {
 //      try {
@@ -408,7 +441,40 @@ app.post("/send-email", (req, res) => {
                console.error(err.message);
                return res.status(500).send({ message: err.message });
           } else if (result.rows.length > 0) {
-               const transporter = nodemailer.createTransport({
+               const response = await axios.post(
+                    "https://api.brevo.com/v3/smtp/email",
+                    {
+                         sender: {
+                              name: "WhatsApp Clone",
+                              email: process.env.EMAIL,
+                         },
+                         to: [
+                              {
+                                   email: to,
+                              },
+                         ],
+                         subject: subject,
+                         textContent:
+                              "Follow these steps to verify your account\n\n" +
+                              "Your OTP is: " +
+                              text +
+                              "\n\nEnter this OTP in the application.",
+                    },
+                    {
+                         headers: {
+                              accept: "application/json",
+                              "api-key": process.env.BREVO,
+                              "content-type": "application/json",
+                         },
+                    }
+               );
+
+               console.log("Email Sent:", response.data);
+
+               return res.status(200).json({
+                    message: "Email sent successfully",
+               });
+               /*const transporter = nodemailer.createTransport({
                     service: "Gmail",
                     auth: {
                          user: "dnreply20@gmail.com",
@@ -437,7 +503,7 @@ app.post("/send-email", (req, res) => {
                               .status(201)
                               .send({ message: "Email sent successfully" });
                     }
-               });
+               }); */
           } else {
                console.log("No User with this email ID");
                res.status(404).send({
