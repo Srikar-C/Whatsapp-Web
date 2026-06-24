@@ -309,7 +309,7 @@ app.post("/send-email-register", async (req, res) => {
 
      console.log("Email Sent:", response.data);
 
-     return res.status(200).json({
+     return res.status(201).json({
           message: "Email sent successfully",
      });
      /*  const transporter = nodemailer.createTransport({
