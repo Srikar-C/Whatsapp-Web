@@ -217,251 +217,254 @@ app.post("/login", (req, res) => {
      });
 });
 //Sending OPT for new user
-// app.post("/send-email-register", (req, res) => {
-//      const { to, subject, text, phone } = req.body;
-//      console.log(to, subject, text, phone);
+app.post("/send-email-register", (req, res) => {
+     const { to, subject, text, phone } = req.body;
+     console.log(to, subject, text, phone);
 
-//      const checkEmail = `SELECT * FROM ${userTable} where useremail=$1;`;
-//      db.query(checkEmail, [to], (err, result) => {
-//           if (err) {
-//                console.error(err.message);
-//                return res.status(500).send({ message: err.message });
-//           } else if (result.rows.length > 0) {
-//                return res.status(303).send({
-//                     message: "Email already registered",
-//                     type: "warn",
-//                });
-//           }
-//      });
-
-//      if (phone.length != 10) {
-//           return res
-//                .status(404)
-//                .send({ message: "Enter 10 digit Phone Number", type: "warn" });
-//      }
-//      if (!emailValidator.validate(to)) {
-//           return res
-//                .status(404)
-//                .send({ message: "Invalid email address", type: "warn" });
-//      }
-//      const transporter = nodemailer.createTransport({
-//           host: "smtp.gmail.com",
-//           port: 587,
-//           secure: false,
-//           auth: {
-//                user: process.env.EMAIL,
-//                pass: process.env.PASSWORD,
-//           },
-//           connectionTimeout: 60000,
-//           greetingTimeout: 60000,
-//           socketTimeout: 60000,
-//      });
-//      // const transporter = nodemailer.createTransport({
-//      //      service: "Gmail",
-//      //      auth: {
-//      //           user: process.env.EMAIL,
-//      //           pass: process.env.PASSWORD,
-//      //      },
-//      // });
-//      const mailOptions = {
-//           from: process.env.EMAIL,
-//           to: to,
-//           subject: subject,
-//           text:
-//                "Follow These steps to change your password\n" +
-//                "1) Enter this OTP: " +
-//                text +
-//                "\n" +
-//                "2) Click on Verify OTP\n",
-//      };
-//      console.log("Creating transporter...");
-
-//      transporter.verify((err, success) => {
-//           if (err) {
-//                console.error("VERIFY ERROR:", err);
-//           } else {
-//                console.log("SMTP server ready");
-//           }
-//      });
-
-
-//      transporter.sendMail(mailOptions, (error, info) => {
-//           if (error) {
-//                console.error(error);
-//                return res.status(500).send({ message: error.message });
-//           } else {
-//                console.log("Mail Sent");
-//                return res
-//                     .status(201)
-//                     .send({ message: "Email sent successfully" });
-//           }
-//      });
-// });
-app.post("/send-email-register", async (req, res) => {
-     try {
-          const { to, subject, text, phone } = req.body;
-
-          console.log(to, subject, text, phone);
-
-          if (phone.length !== 10) {
-               return res.status(400).semd({
-                    message: "Enter 10 digit Phone Number",
-                    type: "warn",
-               });
-          }
-
-          if (!emailValidator.validate(to)) {
-               return res.status(400).send({
-                    message: "Invalid email address",
-                    type: "warn",
-               });
-          }
-
-          const checkEmail = `SELECT * FROM ${userTable} WHERE useremail = $1`;
-
-          const result = await db.query(checkEmail, [to]);
-
-          if (result.rows.length > 0) {
-               return res.status(303).json({
+     const checkEmail = `SELECT * FROM ${userTable} where useremail=$1;`;
+     db.query(checkEmail, [to], (err, result) => {
+          if (err) {
+               console.error(err.message);
+               return res.status(500).send({ message: err.message });
+          } else if (result.rows.length > 0) {
+               return res.status(303).send({
                     message: "Email already registered",
                     type: "warn",
                });
           }
+     });
 
-          const response = await resend.emails.send({
-               from: "onboarding@resend.dev",
-               to: to,
-               subject: subject,
-               text:
-                    "Follow These steps to verify your account\n\n" +
-                    "Your OTP is: " +
-                    text +
-                    "\n\nEnter the OTP in the application.",
-          });
-
-          console.log(response);
-
-          return res.status(201).json({
-               message: "Email sent successfully",
-          });
-
-     } catch (error) {
-          console.error(error);
-
-          return res.status(500).json({
-               message: error.message,
-          });
+     if (phone.length != 10) {
+          return res
+               .status(404)
+               .send({ message: "Enter 10 digit Phone Number", type: "warn" });
      }
+     if (!emailValidator.validate(to)) {
+          return res
+               .status(404)
+               .send({ message: "Invalid email address", type: "warn" });
+     }
+     const transporter = nodemailer.createTransport({
+          host: "smtp-relay.brevo.com",
+          port: 587,
+          secure: false,
+          auth: {
+               user: process.env.EMAIL,
+               pass: process.env.PASSWORD,
+               // xsmtpsib-78cbcfe4be1bef6ea3ccb51c1fd32b94c37e236c3b47218b5e563484322f4ed4-5ZdEPB09OhiMzCDF
+          },
+          connectionTimeout: 60000,
+          greetingTimeout: 60000,
+          socketTimeout: 60000,
+     });
+     // const transporter = nodemailer.createTransport({
+     //      service: "Gmail",
+     //      auth: {
+     //           user: process.env.EMAIL,
+     //           pass: process.env.PASSWORD,
+     //      },
+     // });
+     const mailOptions = {
+          from: process.env.EMAIL,
+          to: to,
+          subject: subject,
+          text:
+               "Follow These steps to change your password\n" +
+               "1) Enter this OTP: " +
+               text +
+               "\n" +
+               "2) Click on Verify OTP\n",
+     };
+     console.log("Creating transporter...");
+
+     transporter.verify((err, success) => {
+          if (err) {
+               console.error("VERIFY ERROR:", err);
+          } else {
+               console.log("SMTP server ready");
+          }
+     });
+
+
+     transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+               console.error(error);
+               return res.status(500).send({ message: error.message });
+          } else {
+               console.log("Mail Sent");
+               return res
+                    .status(201)
+                    .send({ message: "Email sent successfully" });
+          }
+     });
 });
+// app.post("/send-email-register", async (req, res) => {
+//      try {
+//           const { to, subject, text, phone } = req.body;
 
-//Sending OTP for existing user
-// app.post("/send-email", (req, res) => {
-//      const { to, subject, text } = req.body;
-//      const query = `SELECT * FROM ${userTable} WHERE useremail=$1;`;
-//      console.log(to, subject, text);
+//           console.log(to, subject, text, phone);
 
-//      if (!emailValidator.validate(to)) {
-//           return res
-//                .status(404)
-//                .send({ message: "Invalid email address", type: "warn" });
-//      }
-
-//      db.query(query, [to], (err, result) => {
-//           if (err) {
-//                console.error(err.message);
-//                return res.status(500).send({ message: err.message });
-//           } else if (result.rows.length > 0) {
-//                const transporter = nodemailer.createTransport({
-//                     service: "Gmail",
-//                     auth: {
-//                          user: "dnreply20@gmail.com",
-//                          pass: "xtsl hxuz nulc doiv",
-//                     },
-//                });
-//                const mailOptions = {
-//                     from: "dnreply20@gmail.com",
-//                     to: to,
-//                     subject: subject,
-//                     text:
-//                          "Follow These steps to change your password\n" +
-//                          "1) Enter this OTP: " +
-//                          text +
-//                          "\n" +
-//                          "2) Click on Verify OTP\n",
-//                };
-//                transporter.sendMail(mailOptions, (error, info) => {
-//                     if (error) {
-//                          console.error(error);
-//                          return res
-//                               .status(500)
-//                               .send({ message: error.message });
-//                     } else {
-//                          return res
-//                               .status(201)
-//                               .send({ message: "Email sent successfully" });
-//                     }
-//                });
-//           } else {
-//                console.log("No User with this email ID");
-//                res.status(404).send({
-//                     message: "No User with this email ID",
+//           if (phone.length !== 10) {
+//                return res.status(400).semd({
+//                     message: "Enter 10 digit Phone Number",
 //                     type: "warn",
 //                });
 //           }
-//      });
+
+//           if (!emailValidator.validate(to)) {
+//                return res.status(400).send({
+//                     message: "Invalid email address",
+//                     type: "warn",
+//                });
+//           }
+
+//           const checkEmail = `SELECT * FROM ${userTable} WHERE useremail = $1`;
+
+//           const result = await db.query(checkEmail, [to]);
+
+//           if (result.rows.length > 0) {
+//                return res.status(303).json({
+//                     message: "Email already registered",
+//                     type: "warn",
+//                });
+//           }
+
+//           const response = await resend.emails.send({
+//                from: "onboarding@resend.dev",
+//                to: to,
+//                subject: subject,
+//                text:
+//                     "Follow These steps to verify your account\n\n" +
+//                     "Your OTP is: " +
+//                     text +
+//                     "\n\nEnter the OTP in the application.",
+//           });
+
+//           console.log(response);
+
+//           return res.status(201).json({
+//                message: "Email sent successfully",
+//           });
+
+//      } catch (error) {
+//           console.error(error);
+
+//           return res.status(500).json({
+//                message: error.message,
+//           });
+//      }
 // });
-app.post("/send-email", async (req, res) => {
-     try {
-          const { to, subject, text } = req.body;
 
-          console.log(to, subject, text);
+//Sending OTP for existing user
 
-          if (!emailValidator.validate(to)) {
-               return res.status(400).json({
-                    message: "Invalid email address",
-                    type: "warn",
+app.post("/send-email", (req, res) => {
+     const { to, subject, text } = req.body;
+     const query = `SELECT * FROM ${userTable} WHERE useremail=$1;`;
+     console.log(to, subject, text);
+
+     if (!emailValidator.validate(to)) {
+          return res
+               .status(404)
+               .send({ message: "Invalid email address", type: "warn" });
+     }
+
+     db.query(query, [to], (err, result) => {
+          if (err) {
+               console.error(err.message);
+               return res.status(500).send({ message: err.message });
+          } else if (result.rows.length > 0) {
+               const transporter = nodemailer.createTransport({
+                    service: "Gmail",
+                    auth: {
+                         user: "dnreply20@gmail.com",
+                         pass: "xtsl hxuz nulc doiv",
+                    },
                });
-          }
-
-          const query = `SELECT * FROM ${userTable} WHERE useremail=$1`;
-
-          const result = await db.query(query, [to]);
-
-          if (result.rows.length === 0) {
-               return res.status(404).json({
+               const mailOptions = {
+                    from: "dnreply20@gmail.com",
+                    to: to,
+                    subject: subject,
+                    text:
+                         "Follow These steps to change your password\n" +
+                         "1) Enter this OTP: " +
+                         text +
+                         "\n" +
+                         "2) Click on Verify OTP\n",
+               };
+               transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) {
+                         console.error(error);
+                         return res
+                              .status(500)
+                              .send({ message: error.message });
+                    } else {
+                         return res
+                              .status(201)
+                              .send({ message: "Email sent successfully" });
+                    }
+               });
+          } else {
+               console.log("No User with this email ID");
+               res.status(404).send({
                     message: "No User with this email ID",
                     type: "warn",
                });
           }
-
-          const response = await resend.emails.send({
-               from: "onboarding@resend.dev",
-               to,
-               subject,
-               text:
-                    "Follow These steps to change your password\n\n" +
-                    "1) Enter this OTP: " +
-                    text +
-                    "\n\n" +
-                    "2) Click on Verify OTP",
-          });
-
-          console.log("Email Sent:", response);
-
-          return res.status(201).send({
-               message: "Email sent successfully",
-          });
-
-     } catch (error) {
-          console.error(error);
-
-          return res.status(500).json({
-               message: error.message,
-          });
-     }
+     });
 });
+// app.post("/send-email", async (req, res) => {
+//      try {
+//           const { to, subject, text } = req.body;
+
+//           console.log(to, subject, text);
+
+//           if (!emailValidator.validate(to)) {
+//                return res.status(400).json({
+//                     message: "Invalid email address",
+//                     type: "warn",
+//                });
+//           }
+
+//           const query = `SELECT * FROM ${userTable} WHERE useremail=$1`;
+
+//           const result = await db.query(query, [to]);
+
+//           if (result.rows.length === 0) {
+//                return res.status(404).json({
+//                     message: "No User with this email ID",
+//                     type: "warn",
+//                });
+//           }
+
+//           const response = await resend.emails.send({
+//                from: "onboarding@resend.dev",
+//                to,
+//                subject,
+//                text:
+//                     "Follow These steps to change your password\n\n" +
+//                     "1) Enter this OTP: " +
+//                     text +
+//                     "\n\n" +
+//                     "2) Click on Verify OTP",
+//           });
+
+//           console.log("Email Sent:", response);
+
+//           return res.status(201).send({
+//                message: "Email sent successfully",
+//           });
+
+//      } catch (error) {
+//           console.error(error);
+
+//           return res.status(500).json({
+//                message: error.message,
+//           });
+//      }
+// });
 
 //Changing Passwords
+
 app.post("/changepassword", (req, res) => {
      const { useremail, password } = req.body;
      const changeQuery = `UPDATE ${userTable} SET userpassword=$2 where useremail=$1 RETURNING *;`;
