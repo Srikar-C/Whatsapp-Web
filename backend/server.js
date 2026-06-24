@@ -304,14 +304,14 @@ app.post("/send-email-register", async (req, res) => {
           console.log(to, subject, text, phone);
 
           if (phone.length !== 10) {
-               return res.status(400).json({
+               return res.status(400).semd({
                     message: "Enter 10 digit Phone Number",
                     type: "warn",
                });
           }
 
           if (!emailValidator.validate(to)) {
-               return res.status(400).json({
+               return res.status(400).send({
                     message: "Invalid email address",
                     type: "warn",
                });
@@ -322,7 +322,7 @@ app.post("/send-email-register", async (req, res) => {
           const result = await db.query(checkEmail, [to]);
 
           if (result.rows.length > 0) {
-               return res.status(409).json({
+               return res.status(303).json({
                     message: "Email already registered",
                     type: "warn",
                });
@@ -341,7 +341,7 @@ app.post("/send-email-register", async (req, res) => {
 
           console.log(response);
 
-          return res.status(200).json({
+          return res.status(201).json({
                message: "Email sent successfully",
           });
 
@@ -448,7 +448,7 @@ app.post("/send-email", async (req, res) => {
 
           console.log("Email Sent:", response);
 
-          return res.status(200).json({
+          return res.status(201).send({
                message: "Email sent successfully",
           });
 
