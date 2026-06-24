@@ -218,8 +218,6 @@ app.post("/login", (req, res) => {
      });
 });
 
-import axios from "axios";
-
 app.get("/test-brevo", async (req, res) => {
      try {
           const response = await axios.post(
