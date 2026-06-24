@@ -237,7 +237,7 @@ app.get("/test-brevo", async (req, res) => {
                },
                {
                     headers: {
-                         "api-key": process.env.PASSWORD,
+                         "api-key": process.env.BREVO,
                          "Content-Type": "application/json"
                     }
                }
