@@ -22,7 +22,7 @@ export default function Register() {
      const [phone, setPhone] = useState("");
      const [pass, setPass] = useState("");
      const [spin, setSpin] = useState(false);
-     // xsmtpsib-78cbcfe4be1bef6ea3ccb51c1fd32b94c37e236c3b47218b5e563484322f4ed4-5ZdEPB09OhiMzCDF
+
 
      useEffect(() => {
           AOS.init({ duration: 1000 });
