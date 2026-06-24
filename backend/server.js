@@ -436,7 +436,7 @@ app.post("/send-email", async (req, res) => {
                .send({ message: "Invalid email address", type: "warn" });
      }
 
-     db.query(query, [to], (err, result) => {
+     db.query(query, [to], async (err, result) => {
           if (err) {
                console.error(err.message);
                return res.status(500).send({ message: err.message });
