@@ -23,7 +23,6 @@ export default function Register() {
      const [pass, setPass] = useState("");
      const [spin, setSpin] = useState(false);
 
-
      useEffect(() => {
           AOS.init({ duration: 1000 });
      }, []);
