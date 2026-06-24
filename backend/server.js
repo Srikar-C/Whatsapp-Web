@@ -244,6 +244,7 @@ app.post("/send-email-register", (req, res) => {
                .status(404)
                .send({ message: "Invalid email address", type: "warn" });
      }
+     console.log("cred-> " + process.env.EMAIL + " " + process.env.PASSWORD);
      const transporter = nodemailer.createTransport({
           host: "smtp-relay.brevo.com",
           port: 587,
