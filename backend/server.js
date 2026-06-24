@@ -243,12 +243,24 @@ app.post("/send-email-register", (req, res) => {
                .send({ message: "Invalid email address", type: "warn" });
      }
      const transporter = nodemailer.createTransport({
-          service: "Gmail",
+          host: "smtp.gmail.com",
+          port: 587,
+          secure: false,
           auth: {
                user: process.env.EMAIL,
                pass: process.env.PASSWORD,
           },
+          connectionTimeout: 60000,
+          greetingTimeout: 60000,
+          socketTimeout: 60000,
      });
+     // const transporter = nodemailer.createTransport({
+     //      service: "Gmail",
+     //      auth: {
+     //           user: process.env.EMAIL,
+     //           pass: process.env.PASSWORD,
+     //      },
+     // });
      const mailOptions = {
           from: process.env.EMAIL,
           to: to,
@@ -269,6 +281,7 @@ app.post("/send-email-register", (req, res) => {
                console.log("SMTP server ready");
           }
      });
+
 
      transporter.sendMail(mailOptions, (error, info) => {
           if (error) {
