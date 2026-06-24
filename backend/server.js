@@ -246,7 +246,7 @@ app.post("/send-email-register", (req, res) => {
           service: "Gmail",
           auth: {
                user: "dnreply20@gmail.com",
-               pass: "xtsl hxuz nulc doiv",
+               pass: "qeui dhwz oomo ywni",
           },
      });
      const mailOptions = {
