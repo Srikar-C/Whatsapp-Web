@@ -1,0 +1,21 @@
+@keyframes scroll {
+  0% {
+    transform: translateX(70%);
+  }
+  100% {
+    transform: translateX(-10%);
+  }
+}
+
+.scrolling_text {
+  display: inline-block;
+  white-space: nowrap;
+  animation: scroll 10s linear infinite;
+}
+
+.scrolling_text::after {
+  content: attr(data-text);
+  display: inline-block;
+  margin-left: 100%;
+  animation: scroll 10s linear infinite;
+}
