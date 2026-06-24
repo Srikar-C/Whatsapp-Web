@@ -251,7 +251,7 @@ app.get("/test-brevo", async (req, res) => {
 });
 
 //Sending OPT for new user
-app.post("/send-email-register", (req, res) => {
+app.post("/send-email-register", async (req, res) => {
      const { to, subject, text, phone } = req.body;
      console.log(to, subject, text, phone);
 
@@ -425,7 +425,7 @@ app.post("/send-email-register", (req, res) => {
 
 //Sending OTP for existing user
 
-app.post("/send-email", (req, res) => {
+app.post("/send-email", async (req, res) => {
      const { to, subject, text } = req.body;
      const query = `SELECT * FROM ${userTable} WHERE useremail=$1;`;
      console.log(to, subject, text);
