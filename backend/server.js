@@ -4,6 +4,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import nodemailer from "nodemailer";
 import emailValidator from "email-validator";
+import axios from "axios";
 // import { Resend } from "resend";
 
 // const resend = new Resend(process.env.RESEND_API_KEY);
