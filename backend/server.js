@@ -245,12 +245,12 @@ app.post("/send-email-register", (req, res) => {
      const transporter = nodemailer.createTransport({
           service: "Gmail",
           auth: {
-               user: "dnreply20@gmail.com",
-               pass: "qeui dhwz oomo ywni",
+               user: process.env.EMAIL,
+               pass: process.env.PASSWORD,
           },
      });
      const mailOptions = {
-          from: "dnreply20@gmail.com",
+          from: process.env.EMAIL,
           to: to,
           subject: subject,
           text:
