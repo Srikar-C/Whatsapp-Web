@@ -260,11 +260,22 @@ app.post("/send-email-register", (req, res) => {
                "\n" +
                "2) Click on Verify OTP\n",
      };
+     console.log("Creating transporter...");
+
+     transporter.verify((err, success) => {
+          if (err) {
+               console.error("VERIFY ERROR:", err);
+          } else {
+               console.log("SMTP server ready");
+          }
+     });
+
      transporter.sendMail(mailOptions, (error, info) => {
           if (error) {
                console.error(error);
                return res.status(500).send({ message: error.message });
           } else {
+               console.log("Mail Sent");
                return res
                     .status(201)
                     .send({ message: "Email sent successfully" });
